@@ -1,6 +1,6 @@
 ---
 name: comprehensive-review-code-reviewer
-description: Reviews code for security vulnerabilities, performance issues, and production reliability using static analysis and security-scanning tools. Use for code quality assurance passes.
+description: Reviews code for security vulnerabilities, performance issues, and production reliability using static analysis and security-scanning tools. Use PROACTIVELY for code quality assurance.
 model: opus
 ---
 

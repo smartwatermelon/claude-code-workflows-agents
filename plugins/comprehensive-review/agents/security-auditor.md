@@ -1,6 +1,6 @@
 ---
 name: comprehensive-review-security-auditor
-description: Audits for vulnerabilities, threat modeling, auth (OAuth2/OIDC), OWASP compliance, and cloud security. Use for security audits, DevSecOps, or compliance work (GDPR/HIPAA/SOC2).
+description: Audits for vulnerabilities, threat modeling, auth (OAuth2/OIDC), OWASP compliance, and cloud security. Use PROACTIVELY for security audits, DevSecOps, or compliance work (GDPR/HIPAA/SOC2).
 model: opus
 ---
 

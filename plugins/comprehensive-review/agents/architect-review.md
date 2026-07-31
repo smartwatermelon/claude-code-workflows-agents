@@ -1,6 +1,6 @@
 ---
 name: comprehensive-review-architect-review
-description: Reviews system designs and code changes for architectural integrity, scalability, and maintainability (clean architecture, microservices, DDD). Use for architectural decisions.
+description: Reviews system designs and code changes for architectural integrity, scalability, and maintainability (clean architecture, microservices, DDD). Use PROACTIVELY for architectural decisions.
 model: opus
 ---
 
