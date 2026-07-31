@@ -1,5 +1,5 @@
 ---
-description: "Orchestrate comprehensive multi-dimensional code review using specialized review agents across architecture, security, performance, testing, and best practices"
+description: "Multi-agent code review dispatching separate architecture, security, performance, and testing reviewers in parallel — broader than a single-reviewer pass."
 argument-hint: "<target path or description> [--security-focus] [--performance-critical] [--strict-mode] [--framework react|spring|django|rails]"
 ---
 
