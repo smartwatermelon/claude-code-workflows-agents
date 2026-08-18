@@ -346,8 +346,10 @@ def _extract_permission_block(raw: str) -> dict | None:
     """Pull the top-level `permission:` block out of raw frontmatter text and return its
     key→value mapping. Returns None if no top-level `permission:` block is found.
 
-    We hand-roll this because `parse_frontmatter` collapses nested mappings into a list
-    of strings, losing key→value structure. Validating from raw text catches the
+    We hand-roll this because `parse_frontmatter` only recognizes one-level mappings
+    indented by exactly two spaces — a 4-space-indented `permission:` block silently
+    parses to an empty string, and it cannot distinguish a top-level `permission:`
+    from one nested under another key. Validating from raw text catches the
     real-shape permission blocks the OpenCode adapter emits.
 
     Only matches `permission:` at column 0 — a nested `  permission:` (e.g. inside a
@@ -441,7 +443,8 @@ def validate_opencode(report: Report) -> None:
                 )
 
             # Validate the permission block by re-parsing raw frontmatter — `fm` from
-            # parse_frontmatter flattens nested mappings into lists, losing structure.
+            # parse_frontmatter misses 4-space-indented blocks and cannot tell a
+            # top-level `permission:` from one nested under another key.
             perm = _extract_permission_block(content)
             if perm:
                 unknown_keys = set(perm.keys()) - _OPENCODE_PERMISSION_KEYS
