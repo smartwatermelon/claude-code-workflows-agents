@@ -69,9 +69,9 @@ echo ""
 
 # 3. Check Chart.yaml
 echo "3️⃣  Validating Chart.yaml..."
-CHART_NAME=$(grep "^name:" "$CHART_DIR/Chart.yaml" | awk '{print $2}')
-CHART_VERSION=$(grep "^version:" "$CHART_DIR/Chart.yaml" | awk '{print $2}')
-APP_VERSION=$(grep "^appVersion:" "$CHART_DIR/Chart.yaml" | awk '{print $2}' | tr -d '"')
+CHART_NAME=$(grep "^name:" "$CHART_DIR/Chart.yaml" | awk '{print $2}' || true)
+CHART_VERSION=$(grep "^version:" "$CHART_DIR/Chart.yaml" | awk '{print $2}' || true)
+APP_VERSION=$(grep "^appVersion:" "$CHART_DIR/Chart.yaml" | awk '{print $2}' | tr -d '"' || true)
 
 if [ -z "$CHART_NAME" ]; then
     error "Chart name not found"

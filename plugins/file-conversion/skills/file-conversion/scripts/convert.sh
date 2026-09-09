@@ -27,6 +27,7 @@ fi
 TARGET=$(printf '%s' "$TARGET" | tr '[:upper:]' '[:lower:]' | sed 's/^\.//')
 case "$TARGET" in
   *[!a-z0-9]*|'') echo "error: invalid target format: '$2' (use a plain extension like pdf, mp3, docx)" >&2; exit 2 ;;
+  *) ;; # valid plain format token; nothing to do
 esac
 BASENAME=$(basename "$IN")
 SRC=$(printf '%s' "${BASENAME##*.}" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9')
@@ -37,6 +38,7 @@ SRC=$(printf '%s' "${BASENAME##*.}" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-
 if [ -n "$OUT" ]; then
   case "$OUT" in
     /*|~*|*../*|*/..|..) echo "error: output path must be relative and must not contain '..': $OUT" >&2; exit 2 ;;
+    *) ;; # relative, non-traversing path; nothing to do
   esac
 fi
 [ -z "$OUT" ] && OUT="${IN%.*}.${TARGET}"
@@ -63,7 +65,7 @@ else
   # printf is a shell builtin, so the large payload here is not subject to argv
   # limits; read it back from the encoded file.
   B64=$(cat "$B64_FILE")
-  SAFE_FN=$(printf '%s' "$BASENAME" | tr -d '"\\' | LC_ALL=C tr -cd '[:print:]')
+  SAFE_FN=$(printf '%s' "$BASENAME" | tr -d '"'"\\\\" | LC_ALL=C tr -cd '[:print:]')
   printf '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"convert_file","arguments":{"base64_content":"%s","source_format":"%s","target_format":"%s","filename":"%s"}}}' \
     "$B64" "$SRC" "$TARGET" "$SAFE_FN" > "$REQ_FILE"
 fi
@@ -72,7 +74,7 @@ HTTP_CODE=$(curl -sS --max-time 300 -o "$RESP_FILE" -w "%{http_code}" \
   -X POST "$ENDPOINT" -H "Content-Type: application/json" --data-binary "@$REQ_FILE")
 
 if [ "$HTTP_CODE" != "200" ]; then
-  echo "error: conversion service returned HTTP $HTTP_CODE: $(head -c 300 "$RESP_FILE")" >&2
+  echo "error: conversion service returned HTTP $HTTP_CODE: $(head -c 300 "$RESP_FILE" || true)" >&2
   exit 4
 fi
 
@@ -80,7 +82,7 @@ DOWNLOAD_URL=$(grep -o 'https://changethisfile.com/v1/jobs/download/[A-Za-z0-9_-
 if [ -z "$DOWNLOAD_URL" ]; then
   # Surface the tool's error text (rate limit, unsupported route, etc.)
   ERR=$(sed 's/\\n/ /g' "$RESP_FILE" | grep -o '"text":"[^"]*"' | head -1 | sed 's/^"text":"//; s/"$//')
-  echo "error: ${ERR:-unexpected response: $(head -c 300 "$RESP_FILE")}" >&2
+  echo "error: ${ERR:-unexpected response: $(head -c 300 "$RESP_FILE" || true)}" >&2
   exit 5
 fi
 

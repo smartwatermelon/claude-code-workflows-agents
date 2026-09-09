@@ -6,7 +6,7 @@
 
 set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+cd "$SCRIPT_DIR" || exit 1
 
 command -v python3 >/dev/null 2>&1 || { echo "SKIP: python3 required"; exit 77; }
 

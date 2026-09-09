@@ -12,9 +12,9 @@ INTERVAL="${1:-30}"
 LOGFILE="${2:-thermal.log}"
 PIDFILE="${LOGFILE}.pid"
 
-if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
-  echo "Stopping existing sampler (pid $(cat "$PIDFILE"))"
-  kill "$(cat "$PIDFILE")"
+if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE" || true)" 2>/dev/null; then
+  echo "Stopping existing sampler (pid $(cat "$PIDFILE" || true))"
+  kill "$(cat "$PIDFILE" || true)"
 fi
 
 echo "timestamp,temperature.gpu,power.draw" > "$LOGFILE"
