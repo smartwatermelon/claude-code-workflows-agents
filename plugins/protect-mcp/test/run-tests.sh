@@ -12,7 +12,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+cd "$SCRIPT_DIR" || exit 1
 
 # --- Preflight ---------------------------------------------------------------
 
@@ -57,8 +57,8 @@ echo "=== Test 1: PreToolUse permit on Read ==="
 INPUT=fixtures/pretool-allow-read.json
 npx --yes protect-mcp@0.7.4 evaluate \
     --policy fixtures/test-policy.cedar \
-    --tool "$(extract "$INPUT" tool_name)" \
-    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT")" \
+    --tool "$(extract "$INPUT" tool_name || true)" \
+    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT" || true)" \
     --fail-on-missing-policy false >/dev/null 2>&1
 check_exit $? 0 "Read is permitted by test-policy.cedar"
 
@@ -68,8 +68,8 @@ echo "=== Test 2: PreToolUse permit on Bash git ==="
 INPUT=fixtures/pretool-allow-bash-safe.json
 npx --yes protect-mcp@0.7.4 evaluate \
     --policy fixtures/test-policy.cedar \
-    --tool "$(extract "$INPUT" tool_name)" \
-    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT")" \
+    --tool "$(extract "$INPUT" tool_name || true)" \
+    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT" || true)" \
     --fail-on-missing-policy false >/dev/null 2>&1
 check_exit $? 0 "Bash 'git status' is permitted"
 
@@ -79,8 +79,8 @@ echo "=== Test 3: PreToolUse forbid on Bash rm -rf ==="
 INPUT=fixtures/pretool-deny-bash-destructive.json
 npx --yes protect-mcp@0.7.4 evaluate \
     --policy fixtures/test-policy.cedar \
-    --tool "$(extract "$INPUT" tool_name)" \
-    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT")" \
+    --tool "$(extract "$INPUT" tool_name || true)" \
+    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT" || true)" \
     --fail-on-missing-policy false >/dev/null 2>&1
 check_exit $? 2 "Bash 'rm -rf /' is denied with exit 2"
 
@@ -90,8 +90,8 @@ echo "=== Test 4: PreToolUse forbid on Write ==="
 INPUT=fixtures/pretool-deny-write.json
 npx --yes protect-mcp@0.7.4 evaluate \
     --policy fixtures/test-policy.cedar \
-    --tool "$(extract "$INPUT" tool_name)" \
-    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT")" \
+    --tool "$(extract "$INPUT" tool_name || true)" \
+    --input "$(python3 -c 'import json,sys; print(json.dumps(json.load(open(sys.argv[1]))["tool_input"]))' "$INPUT" || true)" \
     --fail-on-missing-policy false >/dev/null 2>&1
 check_exit $? 2 "Write is denied with exit 2"
 

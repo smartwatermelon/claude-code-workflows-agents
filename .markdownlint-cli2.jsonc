@@ -1,0 +1,24 @@
+// markdownlint-cli2 configuration.
+//
+// Scope: this repo lints its own top-level and `docs/` Markdown. Per-plugin
+// documentation under `plugins/` is owned by the plugin authors, which is the
+// same scope the repo's own `markdownlint` CI job already applies -- it runs
+// `markdownlint-cli2 "*.md" "docs/*.md"` and does not walk `plugins/`.
+//
+// This file exists so that tooling which discovers Markdown itself (the
+// fleet-wide `standards-check` workflow, pre-commit hooks) applies that same
+// scope, instead of reporting several hundred findings in vendored plugin
+// docs that this repo does not own.
+//
+// Rules live in `.markdownlint.json` and are extended here rather than
+// duplicated, so the two configs cannot drift. The repo's own CI action reads
+// `.markdownlint.json` directly.
+{
+  "config": {
+    "extends": ".markdownlint.json"
+  },
+  "ignores": [
+    "plugins/**",
+    "node_modules/**"
+  ]
+}
