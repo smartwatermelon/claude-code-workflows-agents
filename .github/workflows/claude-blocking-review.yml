@@ -20,7 +20,7 @@ jobs:
   # still runs and reports a real PASS. See
   # smartwatermelon/github-workflows#115/#117.
   claude-review:
-    uses: smartwatermelon/github-workflows/.github/workflows/claude-blocking-review.yml@v3.1.1
+    uses: smartwatermelon/github-workflows/.github/workflows/claude-blocking-review.yml@v3
     with:
       pr_number: ${{ github.event.pull_request.number }}
       # Repo-specific review criteria carried over from the previous
