@@ -16,6 +16,9 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     commit-message:
       prefix: "deps(yt-design-extractor)"
     groups:
@@ -33,6 +36,9 @@ updates:
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
     commit-message:
       prefix: "deps(plugin-eval)"
     groups:
