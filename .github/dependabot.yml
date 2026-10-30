@@ -17,8 +17,7 @@ updates:
     labels:
       - "dependencies"
     cooldown:
-      default-days: 7
-      semver-major-days: 14
+      default-days: 3
     commit-message:
       prefix: "deps(yt-design-extractor)"
     groups:
@@ -37,8 +36,7 @@ updates:
     labels:
       - "dependencies"
     cooldown:
-      default-days: 7
-      semver-major-days: 14
+      default-days: 3
     commit-message:
       prefix: "deps(plugin-eval)"
     groups:
