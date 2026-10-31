@@ -18,6 +18,7 @@ import json
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -39,15 +40,31 @@ def _has(cli: str) -> bool:
 def _run(
     args: list[str], cwd: Path | None = None, env: dict | None = None
 ) -> subprocess.CompletedProcess:
-    """Run a subprocess with a tight timeout and capture stdout/stderr."""
-    return subprocess.run(
-        args,
-        capture_output=True,
-        text=True,
-        timeout=_TIMEOUT,
-        cwd=str(cwd) if cwd else None,
-        env=env,
-    )
+    """Run a subprocess with a tight timeout and capture stdout/stderr.
+
+    Output goes to temporary files, not pipes. `opencode agent list` writes
+    about 9 MB, and OpenCode drops whatever is still buffered when it exits
+    while a pipe reader lags, yet exits 0. On CI runners that cut the list
+    short and hid the last agents alphabetically (2026-10-30). A file is
+    written synchronously, so nothing is lost.
+    """
+    with tempfile.TemporaryFile() as out, tempfile.TemporaryFile() as err:
+        proc = subprocess.run(
+            args,
+            stdout=out,
+            stderr=err,
+            timeout=_TIMEOUT,
+            cwd=str(cwd) if cwd else None,
+            env=env,
+        )
+        out.seek(0)
+        err.seek(0)
+        return subprocess.CompletedProcess(
+            proc.args,
+            proc.returncode,
+            out.read().decode(errors="replace"),
+            err.read().decode(errors="replace"),
+        )
 
 
 # ── OpenCode CLI ─────────────────────────────────────────────────────────────
