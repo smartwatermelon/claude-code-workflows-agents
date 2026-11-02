@@ -36,7 +36,7 @@ make test                  # full pytest suite (plugin-eval + tools/tests/)
 make smoke-test            # real-CLI subprocess tests against generated artifacts
 ```
 
-CI (`.github/workflows/validate.yml`) runs all four on every PR plus installs OpenCode + Gemini CLI for live verification.
+CI (`.github/workflows/validate.yml`) runs the first three on every PR. `make smoke-test` is local only; it skips any CLI not on PATH.
 
 ## Regenerating per-harness artifacts
 
