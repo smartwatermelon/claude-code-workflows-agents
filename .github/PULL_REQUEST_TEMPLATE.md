@@ -5,8 +5,8 @@ Thanks for the PR. A few quick orientation pointers:
 - docs/authoring.md is the portable-content style guide.
 - If you touched plugin source, run `make generate-all` to refresh the committed
   native-install registries (CI gates registry drift).
-- CI runs make validate STRICT=1, make garden, make test, make smoke-test, and the
-  code-quality workflow (ruff/ty/markdownlint).
+- CI runs make validate STRICT=1, make garden, make test, and the code-quality
+  workflow (ruff/ty/markdownlint). `make smoke-test` is local only.
 -->
 
 ## Summary
