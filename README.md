@@ -1,5 +1,17 @@
 # Agentic Plugin Marketplace
 
+> [!IMPORTANT]
+> **This repository is retired and archived (2026-11-02).** It was a copy of
+> [wshobson/agents](https://github.com/wshobson/agents) by Seth Hobson (MIT),
+> made on 2026-07-31 at upstream commit `c4b82b0`. Its only used plugin,
+> `comprehensive-review`, now lives in
+> [smartwatermelon/smartwatermelon-marketplace](https://github.com/smartwatermelon/smartwatermelon-marketplace/tree/main/plugins/comprehensive-review).
+> That copy records its provenance in its README. For everything else, use
+> upstream [wshobson/agents](https://github.com/wshobson/agents). The text
+> below is upstream's README as of that commit.
+
+---
+
 > Production-ready agentic workflow building blocks: **94 plugins**, **203 agents**,
 > **175 skills**, **109 commands** — built for Claude Code and consumed natively by
 > OpenAI Codex CLI, Cursor, OpenCode, Gemini CLI, and GitHub Copilot from a single Markdown source.
